@@ -29,8 +29,8 @@ export interface ProxyResult {
 
 /** Read credentials from the environment. Returns null if not configured. */
 export function readConfig(env: Record<string, string | undefined>): FTConfig | null {
-  const clientId = env.FRANCE_TRAVAIL_CLIENT_ID;
-  const clientSecret = env.FRANCE_TRAVAIL_CLIENT_SECRET;
+  const clientId = env.FRANCE_TRAVAIL_CLIENT_ID?.trim();
+  const clientSecret = env.FRANCE_TRAVAIL_CLIENT_SECRET?.trim();
   if (!clientId || !clientSecret) return null;
   return { clientId, clientSecret };
 }

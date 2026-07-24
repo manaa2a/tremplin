@@ -60,8 +60,9 @@ export default async function handler(req: Req, res: Res): Promise<void> {
       else if (Array.isArray(v) && v[0]) params[k] = String(v[0]);
     }
 
-    const clientId = process.env.FRANCE_TRAVAIL_CLIENT_ID;
-    const clientSecret = process.env.FRANCE_TRAVAIL_CLIENT_SECRET;
+    // Trim to defend against a stray space / newline pasted into the env var.
+    const clientId = process.env.FRANCE_TRAVAIL_CLIENT_ID?.trim();
+    const clientSecret = process.env.FRANCE_TRAVAIL_CLIENT_SECRET?.trim();
 
     res.setHeader('Content-Type', 'application/json');
 

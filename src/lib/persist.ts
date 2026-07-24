@@ -8,7 +8,7 @@ import type { Application } from '../types';
  */
 
 const KEY = 'tremplin.v1';
-const VERSION = 1;
+const VERSION = 2;
 
 export interface PersistedState {
   apps: Application[];

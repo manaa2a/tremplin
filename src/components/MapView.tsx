@@ -37,7 +37,7 @@ function offerIcon(inRange: boolean): L.DivIcon {
 function FitRadius({ distanceKm }: { distanceKm: number }) {
   const map = useMap();
   useEffect(() => {
-    const zoom = Math.max(10, Math.min(14, Math.round(14 - Math.log2(distanceKm))));
+    const zoom = Math.max(8, Math.min(14, Math.round(13.3 - Math.log2(distanceKm))));
     const id = requestAnimationFrame(() => {
       try {
         map.invalidateSize();

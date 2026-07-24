@@ -37,37 +37,6 @@ export const MOCK_APPS: Application[] = [
     ],
   },
   {
-    id: 'a3', title: 'Agent de quai', company: 'DHL', logo: 'D',
-    city: 'Orly', distanceKm: 2, contract: 'CDD', salary: '1 800 €', schedule: 'Nuit 21h–5h',
-    caces: 'Sans CACES', status: 'a_relancer', source: 'France Travail', appliedDate: '11 juil.', waitDays: 11,
-    contactName: 'Nadia Cherif', contactRole: 'RH site Orly', contactPhone: '0149751800', contactEmail: 'n.cherif@dhl.com',
-    timeline: [{ label: 'Candidature envoyée', date: '11 juil.' }],
-  },
-  {
-    id: 'a4', title: 'Magasinier', company: 'Chronopost', logo: 'C',
-    city: 'Chilly-Mazarin', distanceKm: 8, contract: 'CDI', salary: '1 950 €', schedule: 'Journée',
-    caces: 'CACES 1/3', status: 'enregistre', source: 'Welcome to the Jungle', appliedDate: '—', waitDays: 0,
-    contactName: 'Service RH', contactRole: 'Recrutement', contactPhone: '0169100500', contactEmail: 'recrutement@chronopost.fr',
-    timeline: [{ label: 'Offre enregistrée', date: '20 juil.' }],
-  },
-  {
-    id: 'a5', title: 'Chauffeur-livreur VL', company: 'Stef', logo: 'S',
-    city: 'Rungis', distanceKm: 6, contract: 'CDI', salary: '2 000 €', schedule: '5h–13h',
-    caces: 'Permis B', status: 'a_postuler', source: 'Indeed', appliedDate: '—', waitDays: 0,
-    contactName: 'Service RH', contactRole: 'Recrutement', contactPhone: '0141802000', contactEmail: 'jobs@stef.com',
-    timeline: [{ label: 'Offre enregistrée', date: '21 juil.' }],
-  },
-  {
-    id: 'a6', title: 'Manutentionnaire', company: 'Kuehne+Nagel', logo: 'K',
-    city: 'Thiais', distanceKm: 5, contract: 'Intérim', salary: '1 750 €', schedule: 'Journée',
-    caces: 'Sans CACES', status: 'refuse', source: 'France Travail', appliedDate: '2 juil.', waitDays: 0,
-    contactName: 'Agence Adecco', contactRole: 'Intérim', contactPhone: '0148900700', contactEmail: 'orly@adecco.fr',
-    timeline: [
-      { label: 'Candidature non retenue', date: '12 juil.' },
-      { label: 'Candidature envoyée', date: '2 juil.' },
-    ],
-  },
-  {
     id: 'a7', title: 'Préparateur de commandes', company: 'Amazon ORY4', logo: 'A',
     city: 'Brétigny', distanceKm: 14, contract: 'CDI', salary: '1 900 €', schedule: 'Équipe',
     caces: 'CACES 1B', status: 'postule', source: 'Site entreprise', appliedDate: '16 juil.', waitDays: 6,

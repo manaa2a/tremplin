@@ -36,7 +36,7 @@ export const initialState: State = {
   tab: 'dashboard',
   detailId: null,
   statusFilter: 'all',
-  distance: 10,
+  distance: 50,
   view: 'map',
   selectedOfferId: null,
   savedIds: [],

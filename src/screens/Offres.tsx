@@ -1,12 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { Search, Map as MapIcon, List as ListIcon, MapPin, Bookmark, Loader2 } from 'lucide-react';
+import { Search, Map as MapIcon, List as ListIcon, MapPin, Bookmark, Loader2, X } from 'lucide-react';
 import { useAppState, useDispatch } from '../store';
 import { MapView } from '../components/MapView';
 import { fetchOffers } from '../services/franceTravail';
 
-const METIERS = ['Préparateur de commandes', 'Cariste', 'Agent de quai'];
+/** Searched when the box is empty (Radouane's profile: cariste / CACES first). */
+const DEFAULT_TERMS = ['Cariste', 'Préparateur de commandes', 'Agent de quai'];
+/** Tappable quick-search chips — but the box accepts ANY métier or entreprise. */
+const SUGGESTIONS = [
+  'Cariste', 'Préparateur de commandes', 'Agent de quai',
+  'Manutentionnaire', 'Magasinier', 'Chauffeur-livreur', 'Agent logistique',
+];
 /** Widest radius we ask the API for; the slider then filters finer, client-side. */
-const MAX_RADIUS_KM = 15;
+const MAX_RADIUS_KM = 50;
 
 export function Offres() {
   const { offers, distance, view, selectedOfferId, savedIds, offersStatus, offersSource, offersNote } = useAppState();
@@ -21,7 +27,7 @@ export function Offres() {
     let cancelled = false;
     const run = async () => {
       const typed = query.split(',').map((s) => s.trim()).filter(Boolean);
-      const terms = typed.length ? typed : METIERS;
+      const terms = typed.length ? typed : DEFAULT_TERMS;
       dispatch({ type: 'OFFERS_LOADING' });
       const result = await fetchOffers({ terms, maxDistanceKm: MAX_RADIUS_KM });
       if (!cancelled) {
@@ -55,17 +61,36 @@ export function Offres() {
         }}>
           <Search size={18} color="var(--color-neutral-600)" />
           <input
-            placeholder="Métier, entreprise…"
+            placeholder="Cherche un métier, une entreprise…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             style={{ flex: 1, border: 0, background: 'none', font: 'inherit', fontSize: 14, outline: 'none' }}
           />
+          {query && (
+            <button
+              onClick={() => setQuery('')}
+              aria-label="Effacer"
+              style={{ border: 0, background: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}
+            >
+              <X size={16} color="var(--color-neutral-600)" />
+            </button>
+          )}
         </div>
+        {/* Quick suggestions — tap to search, or type anything above */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 12 }}>
-          {METIERS.map((m) => (
-            <span key={m} className="tag tag-accent">{m} ✕</span>
-          ))}
-          <span className="tag tag-outline">+ métier</span>
+          {SUGGESTIONS.map((m) => {
+            const active = query.trim().toLowerCase() === m.toLowerCase();
+            return (
+              <button
+                key={m}
+                onClick={() => setQuery(active ? '' : m)}
+                className={active ? 'tag tag-accent' : 'tag tag-outline'}
+                style={{ cursor: 'pointer', background: active ? undefined : 'none' }}
+              >
+                {m}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -78,11 +103,11 @@ export function Offres() {
           </span>
         </div>
         <input
-          type="range" min={1} max={15} step={1} value={distance}
+          type="range" min={1} max={50} step={1} value={distance}
           onChange={(e) => dispatch({ type: 'SET_DISTANCE', km: Number(e.target.value) })}
         />
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, fontSize: 10, color: 'var(--color-neutral-500)' }}>
-          <span>1 km</span><span>15 km</span>
+          <span>1 km</span><span>50 km</span>
         </div>
       </div>
 

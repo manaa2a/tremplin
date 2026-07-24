@@ -1,12 +1,16 @@
-import { Zap } from 'lucide-react';
+import { Zap, ArrowRight } from 'lucide-react';
 import { useDispatch } from '../store';
+import { USER_NAME } from '../data/mock';
 
+/** Welcome screen — the app is dedicated to a single user (Radouane), so there's
+ *  no sign-in form: one tap to enter. */
 export function Login() {
   const dispatch = useDispatch();
-  const login = () => dispatch({ type: 'LOGIN' });
+  const enter = () => dispatch({ type: 'LOGIN' });
+  const firstName = USER_NAME.split(' ')[0];
 
   return (
-    <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', padding: '36px 28px 28px' }}>
+    <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', padding: '36px 28px 32px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{
           width: 34, height: 34, background: 'var(--color-accent)',
@@ -21,39 +25,23 @@ export function Login() {
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: '24px 0' }}>
         <h6 style={{ color: 'var(--color-accent)', margin: '0 0 12px' }}>Ta recherche, sous contrôle</h6>
-        <h1 style={{ fontSize: 38, lineHeight: 1.02, margin: '0 0 14px' }}>
-          Chaque candidature te rapproche du poste.
+        <h1 style={{ fontSize: 40, lineHeight: 1.0, margin: '0 0 16px' }}>
+          Salut {firstName} 👋
         </h1>
-        <p className="text-muted" style={{ fontSize: 14, margin: 0 }}>
-          Suis tes offres logistique autour d'Orly, relance en un clic, et ne rate plus jamais un retour.
+        <p className="text-muted" style={{ fontSize: 15, margin: 0, maxWidth: 320 }}>
+          Tes candidatures logistique autour d'Orly, tes relances en un clic, et toutes les
+          offres à proximité — au même endroit.
         </p>
       </div>
 
-      <form
-        style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
-        onSubmit={(e) => { e.preventDefault(); login(); }}
+      <button
+        className="btn btn-primary btn-block"
+        style={{ justifyContent: 'center', gap: 8, height: 52, fontSize: 16 }}
+        onClick={enter}
       >
-        <div className="field">
-          <label>E-mail</label>
-          <input className="input" type="email" placeholder="radouane@mail.com" defaultValue="radouane.bensaid@gmail.com" />
-        </div>
-        <div className="field">
-          <label>Mot de passe</label>
-          <input className="input" type="password" placeholder="••••••••" defaultValue="tremplin" />
-        </div>
-        <button className="btn btn-primary btn-block" type="submit" style={{ justifyContent: 'center', marginTop: 6, height: 46 }}>
-          Se connecter
-        </button>
-        <button className="btn btn-secondary" type="button" style={{ justifyContent: 'center', height: 44 }} onClick={login}>
-          Continuer avec France Travail
-        </button>
-        <p className="text-muted" style={{ textAlign: 'center', fontSize: 12, margin: '4px 0 0' }}>
-          Pas encore de compte ?{' '}
-          <a href="#" onClick={(e) => { e.preventDefault(); login(); }} style={{ fontWeight: 800 }}>
-            Créer un compte
-          </a>
-        </p>
-      </form>
+        Entrer
+        <ArrowRight size={18} />
+      </button>
     </div>
   );
 }

@@ -37,6 +37,8 @@ export interface Application {
   contactRole: string;
   contactPhone: string;
   contactEmail: string;
+  /** Link to the original job posting (France Travail), when available. */
+  url?: string;
   timeline: TimelineEntry[];
 }
 
@@ -59,4 +61,6 @@ export interface Offer {
   contactRole: string;
   contactPhone: string;
   contactEmail: string;
+  /** Link to the original job posting (France Travail), when available. */
+  url?: string;
 }

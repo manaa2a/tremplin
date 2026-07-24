@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Search, Map as MapIcon, List as ListIcon, MapPin, Bookmark, Loader2, X } from 'lucide-react';
+import { Search, Map as MapIcon, List as ListIcon, MapPin, Bookmark, Loader2, X, ExternalLink } from 'lucide-react';
 import { useAppState, useDispatch } from '../store';
 import { MapView } from '../components/MapView';
 import { fetchOffers } from '../services/franceTravail';
@@ -183,6 +183,18 @@ export function Offres() {
                 </span>
               </div>
               <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                {selected.url && (
+                  <a
+                    className="btn btn-secondary"
+                    href={selected.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ flex: 1, justifyContent: 'center', height: 40 }}
+                  >
+                    <ExternalLink size={14} />
+                    Voir l'offre
+                  </a>
+                )}
                 <button
                   className="btn btn-primary"
                   style={{ flex: 1, justifyContent: 'center', height: 40 }}
@@ -232,14 +244,28 @@ export function Offres() {
                 </span>
                 <span className="tag tag-neutral" style={{ marginLeft: 'auto' }}>{o.contract}</span>
               </div>
-              <button
-                className="btn btn-secondary btn-block"
-                style={{ justifyContent: 'center', height: 38, marginTop: 12 }}
-                onClick={() => dispatch({ type: 'SAVE_OFFER', id: o.id })}
-              >
-                <Bookmark size={14} />
-                {isSaved(o.id) ? 'Enregistré ✓' : 'Enregistrer'}
-              </button>
+              <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                {o.url && (
+                  <a
+                    className="btn btn-secondary"
+                    href={o.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ flex: 1, justifyContent: 'center', height: 38 }}
+                  >
+                    <ExternalLink size={14} />
+                    Voir l'offre
+                  </a>
+                )}
+                <button
+                  className="btn btn-secondary"
+                  style={{ flex: 1, justifyContent: 'center', height: 38 }}
+                  onClick={() => dispatch({ type: 'SAVE_OFFER', id: o.id })}
+                >
+                  <Bookmark size={14} />
+                  {isSaved(o.id) ? 'Enregistré ✓' : 'Enregistrer'}
+                </button>
+              </div>
             </div>
           ))}
         </div>

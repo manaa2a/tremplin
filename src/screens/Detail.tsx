@@ -1,4 +1,4 @@
-import { ChevronLeft, Phone, Mail, Zap } from 'lucide-react';
+import { ChevronLeft, Phone, Mail, Zap, ExternalLink } from 'lucide-react';
 import { useAppState, useDispatch } from '../store';
 import { initials, meta } from '../lib/status';
 import { StatusBadge } from '../components/StatusBadge';
@@ -126,6 +126,18 @@ export function Detail() {
         >
           <Zap size={17} /> Relancer en 1 clic
         </button>
+
+        {a.url && (
+          <a
+            className="btn btn-secondary btn-block"
+            href={a.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ justifyContent: 'center', height: 46, marginTop: 10 }}
+          >
+            <ExternalLink size={16} /> Voir l'offre en ligne
+          </a>
+        )}
 
         {/* Timeline */}
         <h6 style={{ margin: '26px 0 12px' }}>Historique</h6>

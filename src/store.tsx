@@ -165,6 +165,7 @@ export function reducer(state: State, action: Action): State {
         distanceKm: o.distanceKm, contract: o.contract, salary: o.salary, schedule: o.schedule,
         caces: o.caces, status: 'a_postuler', source: o.source, appliedDate: '—', waitDays: 0,
         contactName: o.contactName, contactRole: o.contactRole, contactPhone: o.contactPhone, contactEmail: o.contactEmail,
+        url: o.url,
         timeline: [{ label: 'Offre enregistrée', date: "Aujourd'hui" }],
       };
       return {

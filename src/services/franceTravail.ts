@@ -105,6 +105,7 @@ function mapResult(r: FTResult): Offer {
     contactRole: 'France Travail',
     contactPhone: r.contact?.telephone || r.contact?.coordonnees1 || '',
     contactEmail: r.contact?.courriel || '',
+    url: r.origineOffre?.urlOrigine || (r.id ? `https://candidat.francetravail.fr/offres/recherche/detail/${r.id}` : undefined),
   };
 }
 

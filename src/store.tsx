@@ -8,7 +8,7 @@ import { MOCK_APPS, MOCK_OFFERS, USER_NAME } from './data/mock';
 import { loadPersisted, savePersisted } from './lib/persist';
 
 export type Screen = 'login' | 'app';
-export type Tab = 'dashboard' | 'apps' | 'search' | 'profile';
+export type Tab = 'dashboard' | 'apps' | 'search' | 'agencies' | 'profile';
 export type View = 'map' | 'list';
 
 export interface State {

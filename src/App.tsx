@@ -8,6 +8,7 @@ import { Dashboard } from './screens/Dashboard';
 import { Suivi } from './screens/Suivi';
 import { Detail } from './screens/Detail';
 import { Offres } from './screens/Offres';
+import { Agences } from './screens/Agences';
 import { Profil } from './screens/Profil';
 
 function CurrentScreen() {
@@ -20,6 +21,7 @@ function CurrentScreen() {
     case 'dashboard': return <Dashboard />;
     case 'apps': return <Suivi />;
     case 'search': return <Offres />;
+    case 'agencies': return <Agences />;
     case 'profile': return <Profil />;
   }
 }

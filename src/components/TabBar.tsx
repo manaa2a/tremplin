@@ -1,4 +1,4 @@
-import { Home, ClipboardList, MapPin, User } from 'lucide-react';
+import { Home, ClipboardList, MapPin, Building2, User } from 'lucide-react';
 import type { Tab } from '../store';
 import { useAppState, useDispatch } from '../store';
 
@@ -6,6 +6,7 @@ const TABS: { key: Tab; label: string; Icon: typeof Home }[] = [
   { key: 'dashboard', label: 'Accueil', Icon: Home },
   { key: 'apps', label: 'Suivi', Icon: ClipboardList },
   { key: 'search', label: 'Offres', Icon: MapPin },
+  { key: 'agencies', label: 'Agences', Icon: Building2 },
   { key: 'profile', label: 'Profil', Icon: User },
 ];
 

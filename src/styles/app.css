@@ -1,0 +1,128 @@
+/* App shell — mobile-first, full-bleed. Ported from the prototype's phone-frame
+   styles but without the fake phone bezel: the app fills the device screen. */
+
+html, body, #root { height: 100%; margin: 0; }
+
+#root {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;            /* comfortable reading width on desktop */
+  margin: 0 auto;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--color-divider);
+}
+
+/* Fake status bar (9:41) */
+.sbar {
+  height: 44px; flex: none;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 26px;
+  font-size: 13px; font-weight: 800;
+  font-family: var(--font-heading); color: var(--color-text);
+  padding-top: env(safe-area-inset-top);
+}
+.sbar .dots { display: flex; gap: 5px; align-items: center; }
+
+/* Scroll viewport */
+.vp { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+.vp::-webkit-scrollbar { width: 0; }
+.padb { padding-bottom: 90px; }
+
+/* Screen entrance animation */
+.lift { animation: lift 0.3s ease both; }
+@keyframes lift {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Bottom tab bar */
+.nav {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 74px;
+  display: flex; padding: 0;
+  border-top: 2px solid var(--color-divider);
+  background: var(--color-bg);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav button {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; background: none; border: 0; cursor: pointer;
+  font-family: var(--font-heading); font-weight: 800; font-size: 10px;
+  letter-spacing: 0.04em; padding-bottom: 8px;
+}
+.nav svg { width: 22px; height: 22px; }
+
+/* Toast */
+.toast {
+  position: absolute; left: 16px; right: 16px; bottom: 88px;
+  background: var(--color-neutral-900); color: #fff;
+  padding: 12px 16px; font-size: 13px;
+  font-family: var(--font-heading); font-weight: 800;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: var(--shadow-lg); z-index: 40;
+}
+
+/* Distance range slider — square accent thumb, 2px track */
+.rangewrap input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 2px; background: var(--color-divider); outline: none;
+}
+.rangewrap input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 22px; height: 22px; background: var(--color-accent);
+  cursor: pointer; border-radius: 0;
+}
+.rangewrap input[type=range]::-moz-range-thumb {
+  width: 22px; height: 22px; background: var(--color-accent);
+  cursor: pointer; border-radius: 0; border: 0;
+}
+
+/* Relance bottom-sheet modal (only rounded corners in the whole app) */
+.sheet-backdrop {
+  position: absolute; inset: 0; z-index: 50;
+  display: flex; align-items: flex-end;
+  background: color-mix(in srgb, var(--color-neutral-900) 55%, transparent);
+}
+.sheet {
+  width: 100%; background: var(--color-bg); padding: 20px;
+  border-top-left-radius: 20px; border-top-right-radius: 20px;
+  max-height: 90%; overflow-y: auto;
+}
+.sheet-handle {
+  width: 40px; height: 4px; background: var(--color-divider);
+  margin: 0 auto 16px;
+}
+
+/* Leaflet map surface */
+.map-surface { position: relative; height: 320px; }
+.map-surface .leaflet-container {
+  height: 100%; width: 100%;
+  background: var(--color-neutral-100);
+  font-family: var(--font-body);
+}
+/* Square home + offer markers */
+.pin-home {
+  width: 16px; height: 16px; background: var(--color-accent);
+  border: 3px solid #fff; box-shadow: var(--shadow-md);
+}
+.pin-offer {
+  display: flex; flex-direction: column; align-items: center;
+}
+.pin-offer .pin-head {
+  width: 26px; height: 26px; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.pin-offer .pin-stem { width: 2px; height: 6px; }
+
+/* Spinner */
+.spin { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Mute the basemap so the red accents carry the map */
+.grayscale-tiles { filter: grayscale(0.5) contrast(1.02); }
+/* Keep Leaflet below the toast / tab bar / sheet */
+.map-surface .leaflet-pane,
+.map-surface .leaflet-top,
+.map-surface .leaflet-bottom { z-index: 1; }

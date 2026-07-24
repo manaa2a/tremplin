@@ -147,13 +147,13 @@ export function Offres() {
           {selected && (
             <div style={{ padding: '14px 20px', borderBottom: '2px solid var(--color-divider)', background: 'var(--color-surface)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'flex-start' }}>
-                <div>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 15 }}>{selected.title}</div>
                   <div className="text-muted" style={{ fontSize: 12 }}>
                     {selected.company} · {selected.city} · {selected.distanceKm} km
                   </div>
                 </div>
-                <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 14, whiteSpace: 'nowrap' }}>
+                <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 14, flex: 'none', maxWidth: '42%', textAlign: 'right' }}>
                   {selected.salary}
                 </span>
               </div>
@@ -188,13 +188,13 @@ export function Offres() {
               style={{ border: '2px solid var(--color-divider)', padding: 14, opacity: inRange(o.distanceKm) ? 1 : 0.45 }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'flex-start' }}>
-                <div style={{ minWidth: 0 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 15, lineHeight: 1.15 }}>
                     {o.title}
                   </div>
                   <div className="text-muted" style={{ fontSize: 12 }}>{o.company}</div>
                 </div>
-                <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 14, whiteSpace: 'nowrap' }}>
+                <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 14, flex: 'none', maxWidth: '42%', textAlign: 'right' }}>
                   {o.salary}
                 </span>
               </div>

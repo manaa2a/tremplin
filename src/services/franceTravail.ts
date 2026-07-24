@@ -95,7 +95,7 @@ function mapResult(r: FTResult): Offer {
     city: cleanCity(r.lieuTravail?.libelle),
     distanceKm: km,
     contract: r.typeContratLibelle || r.typeContrat || 'Contrat',
-    salary: r.salaire?.libelle || '—',
+    salary: cleanSalary(r.salaire?.libelle),
     schedule: r.dureeTravailLibelle || '—',
     caces: detectCaces(`${r.intitule ?? ''} ${r.description ?? ''}`),
     source: 'France Travail',
@@ -106,6 +106,23 @@ function mapResult(r: FTResult): Offer {
     contactPhone: r.contact?.telephone || r.contact?.coordonnees1 || '',
     contactEmail: r.contact?.courriel || '',
   };
+}
+
+/** France Travail salary labels are verbose ("Annuel de 22405.0 Euros à 27405.0
+ *  Euros sur 12.0 mois") — compact them for the card. */
+function cleanSalary(libelle?: string): string {
+  if (!libelle) return '—';
+  const s = libelle
+    .replace(/(\d)\.0\b/g, '$1')              // 22405.0 → 22405
+    .replace(/\bEuros?\b/gi, '€')
+    .replace(/\bde\s+/gi, '')                  // "Annuel de 2000" → "Annuel 2000"
+    .replace(/\s*à\s*/gi, '–')                 // range → dash
+    .replace(/\s*sur\s+\d+\s*mois/gi, '')      // drop "sur 12 mois"
+    .replace(/^\s*Salaire\s*/i, '')            // drop leading "Salaire"
+    .replace(/\s*€/g, ' €')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return s || '—';
 }
 
 /** "94 - ORLY" → "Orly". */

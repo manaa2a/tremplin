@@ -24,36 +24,58 @@ export interface OffersResult {
 }
 
 export interface SearchParams {
-  keywords: string;
+  /** One term per métier — France Travail's `motsCles` is an AND, so a single
+   *  multi-métier string returns nothing. We query each term separately and merge. */
+  terms: string[];
   /** Max radius to request from the API, in km (the slider filters finer, client-side). */
   maxDistanceKm: number;
 }
 
-/**
- * Fetch offers via the server proxy. Falls back to the bundled mock offers when
- * the proxy is not configured (no credentials) or unreachable — so the app keeps
- * working offline and the design is always demonstrable.
- */
-export async function fetchOffers({ keywords, maxDistanceKm }: SearchParams): Promise<OffersResult> {
+interface OneResult {
+  status: number;
+  results: FTResult[];
+}
+
+async function fetchOne(term: string, maxDistanceKm: number): Promise<OneResult> {
   const qs = new URLSearchParams({
-    motsCles: keywords,
+    motsCles: term,
     commune: HOME_COMMUNE,
     distance: String(maxDistanceKm),
-    range: '0-49',
+    range: '0-24',
   });
+  const res = await fetch(`/api/france-travail/search?${qs.toString()}`);
+  if (!res.ok) return { status: res.status, results: [] };
+  const data = (await res.json().catch(() => ({}))) as { resultats?: FTResult[] };
+  return { status: res.status, results: data.resultats ?? [] };
+}
+
+/**
+ * Fetch offers via the server proxy — one request per métier term, merged and
+ * de-duplicated by id. Falls back to the bundled mock offers when the proxy is
+ * not configured (no credentials) or unreachable, so the app always works.
+ */
+export async function fetchOffers({ terms, maxDistanceKm }: SearchParams): Promise<OffersResult> {
+  const list = terms.map((t) => t.trim()).filter(Boolean);
+  if (list.length === 0) return { offers: [], source: 'live' };
 
   try {
-    const res = await fetch(`/api/france-travail/search?${qs.toString()}`);
+    const settled = await Promise.all(list.map((t) => fetchOne(t, maxDistanceKm)));
 
-    if (res.status === 501) {
+    // Any 501 → proxy not configured → demo mode.
+    if (settled.some((s) => s.status === 501)) {
       return { offers: MOCK_OFFERS, source: 'mock', note: 'Identifiants France Travail absents — données de démo.' };
     }
-    if (!res.ok) {
-      return { offers: MOCK_OFFERS, source: 'mock', note: `API indisponible (${res.status}) — données de démo.` };
-    }
 
-    const data = (await res.json()) as { resultats?: FTResult[] };
-    const offers = (data.resultats ?? []).map(mapResult);
+    const seen = new Set<string>();
+    const offers: Offer[] = [];
+    for (const s of settled) {
+      for (const r of s.results) {
+        if (r.id && !seen.has(r.id)) {
+          seen.add(r.id);
+          offers.push(mapResult(r));
+        }
+      }
+    }
     return { offers, source: 'live' };
   } catch {
     return { offers: MOCK_OFFERS, source: 'mock', note: 'Réseau indisponible — données de démo.' };

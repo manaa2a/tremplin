@@ -5,7 +5,6 @@ import { MapView } from '../components/MapView';
 import { fetchOffers } from '../services/franceTravail';
 
 const METIERS = ['Préparateur de commandes', 'Cariste', 'Agent de quai'];
-const DEFAULT_QUERY = 'préparateur de commandes cariste agent de quai';
 /** Widest radius we ask the API for; the slider then filters finer, client-side. */
 const MAX_RADIUS_KM = 15;
 
@@ -13,15 +12,18 @@ export function Offres() {
   const { offers, distance, view, selectedOfferId, savedIds, offersStatus, offersSource, offersNote } = useAppState();
   const dispatch = useDispatch();
 
-  const [query, setQuery] = useState(DEFAULT_QUERY);
+  // Free-text box; empty → search the default métiers. Comma-separated → several terms.
+  const [query, setQuery] = useState('');
   const firstLoad = useRef(true);
 
   // Fetch live offers on mount, then on debounced keyword changes.
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
+      const typed = query.split(',').map((s) => s.trim()).filter(Boolean);
+      const terms = typed.length ? typed : METIERS;
       dispatch({ type: 'OFFERS_LOADING' });
-      const result = await fetchOffers({ keywords: query || DEFAULT_QUERY, maxDistanceKm: MAX_RADIUS_KM });
+      const result = await fetchOffers({ terms, maxDistanceKm: MAX_RADIUS_KM });
       if (!cancelled) {
         dispatch({ type: 'OFFERS_LOADED', offers: result.offers, source: result.source, note: result.note });
       }
